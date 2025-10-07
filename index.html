@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrollChipsS Tarefas SP - Sistema Real</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e90ff;
+            --primary-dark: #1c86ee;
+            --primary-light: #63b3ff;
+            --background: #001f3f;
+            --background-light: #003366;
+            --card: #00264d;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --success: #48bb78;
+            --error: #f56565;
+            --warning: #ed8936;
+            --info: #63b3ff;
+            --border: #333333;
+            --glow: rgba(30, 144, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--background), #0d0d0d);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px var(--glow);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--background-light);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--glow);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .config-row {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .config-group {
+            flex: 1;
+        }
+
+        .status-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1.5rem 0;
+            padding: 0.75rem;
+            background-color: var(--background-light);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .verify-btn {
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--text-secondary);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verify-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .buttons-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .message-area {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+
+        .message-success {
+            background-color: rgba(72, 187, 120, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .message-error {
+            background-color: rgba(245, 101, 101, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tasks-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+        }
+
+        .task-item input[type="checkbox"] {
+            margin-right: 0.75rem;
+        }
+
+        .task-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-weight: normal;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .modal-actions .btn {
+            width: auto;
+            flex: 1;
+            min-width: 120px;
+            padding: 0.75rem 1rem;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .time-inputs input {
+            width: 70px;
+        }
+
+        .progress-modal-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .progress-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--background-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .config-row {
+                flex-direction: column;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .modal-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal de Seleção de Tarefas -->
+    <div class="modal" id="taskSelectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="taskSelectionModalTitle">Tarefas Encontradas</h3>
+                <button class="close-modal" id="closeTaskSelectionModalBtn">×</button>
+            </div>
+            
+            <div class="select-all-section">
+                <label>
+                    <input type="checkbox" id="selectAllTasksCheckbox">
+                    Selecionar todas as tarefas
+                </label>
+            </div>
+            
+            <div class="tasks-list" id="taskListContainer">
+                <!-- As tarefas serão carregadas aqui -->
+            </div>
+            
+            <div class="modal-actions">
+                <div class="time-inputs">
+                    <div>
+                        <label for="modalMinTime">Min (min):</label>
+                        <input type="number" id="modalMinTime" value="1" min="1" max="60">
+                    </div>
+                    <div>
+                        <label for="modalMaxTime">Max (min):</label>
+                        <input type="number" id="modalMaxTime" value="3" min="1" max="60">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="startSelectedTasksBtn">
+                    <i class="fas fa-play"></i> Processar Selecionadas
+                </button>
+                <button class="btn btn-secondary" id="startAllTasksBtn">
+                    <i class="fas fa-forward"></i> Processar Todas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Progresso -->
+    <div class="modal" id="progressModal">
+        <div class="modal-content progress-modal-content">
+            <div class="progress-spinner"></div>
+            <h3 id="progressModalTitle">Processando...</h3>
+            <p id="progressModalMessage"></p>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+            <span id="progressPercentageText">0%</span>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <div class="logo-section">
+            <img src="https://trollchipss.netlify.app/logo-trollchips.png" alt="TrollChipsS" class="logo">
+            <h1>TrollChipsS Tarefas</h1>
+            <p class="subtitle">Sistema de Automação de Tarefas SP</p>
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <label for="ra">RA do Aluno</label>
+                <input type="text" id="ra" placeholder="Ex: 123456789sp" autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <div class="input-with-icon">
+                    <input type="password" id="senha" placeholder="Sua senha" autocomplete="current-password">
+                    <button class="toggle-password" id="togglePassword" type="button">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="config-row">
+                <div class="config-group">
+                    <label for="minTime">Tempo mínimo (minutos)</label>
+                    <input type="number" id="minTime" value="1" min="1" max="60">
+                </div>
+                <div class="config-group">
+                    <label for="maxTime">Tempo máximo (minutos)</label>
+                    <input type="number" id="maxTime" value="3" min="1" max="60">
+                </div>
+            </div>
+
+            <div class="status-section">
+                <button class="verify-btn" id="verifyBtn"></button>
+                <div class="spinner" id="spinner"></div>
+                <span id="statusText">Não verificado</span>
+            </div>
+
+            <div class="buttons-section">
+                <button class="btn btn-primary" id="btnPending" disabled>
+                    <i class="fas fa-tasks"></i> Buscar Tarefas Pendentes
+                </button>
+                <button class="btn btn-secondary" id="btnExpired" disabled>
+                    <i class="fas fa-clock"></i> Buscar Tarefas Expiradas
+                </button>
+            </div>
+
+            <div class="message-area" id="messageArea"></div>
+        </div>
+    </div>
+
+    <script>
+        // ================= CONFIGURAÇÃO =================
+        const API_BASE_URL = "https://edusp-api.ip.tv";
+        const LOGIN_URL = "https://sedintegracoes.educacao.sp.gov.br/credenciais/api/LoginCompletoToken";
+        const OCP_APIM_KEY = "2b03c1db3884488795f79c37c069381a";
+
+        // ================= VARIÁVEIS GLOBAIS =================
+        let currentFetchedTasks = [];
+        let currentAuthToken = null;
+        let isVerified = false;
+        let isProcessing = false;
+
+        // ================= ELEMENTOS DA DOM =================
+        const elements = {
+            ra: document.getElementById('ra'),
+            senha: document.getElementById('senha'),
+            togglePassword: document.getElementById('togglePassword'),
+            verifyBtn: document.getElementById('verifyBtn'),
+            spinner: document.getElementById('spinner'),
+            statusText: document.getElementById('statusText'),
+            btnPending: document.getElementById('btnPending'),
+            btnExpired: document.getElementById('btnExpired'),
+            messageArea: document.getElementById('messageArea'),
+            taskSelectionModal: document.getElementById('taskSelectionModal'),
+            taskListContainer: document.getElementById('taskListContainer'),
+            selectAllCheckbox: document.getElementById('selectAllTasksCheckbox'),
+            closeModalBtn: document.getElementById('closeTaskSelectionModalBtn'),
+            startSelectedBtn: document.getElementById('startSelectedTasksBtn'),
+            startAllBtn: document.getElementById('startAllTasksBtn'),
+            modalMinTime: document.getElementById('modalMinTime'),
+            modalMaxTime: document.getElementById('modalMaxTime'),
+            progressModal: document.getElementById('progressModal'),
+            progressModalTitle: document.getElementById('progressModalTitle'),
+            progressModalMessage: document.getElementById('progressModalMessage'),
+            progressBarFill: document.getElementById('progressBarFill'),
+            progressPercentageText: document.getElementById('progressPercentageText')
+        };
+
+        // ================= FUNÇÕES DE UTILIDADE =================
+        function showMessage(message, type) {
+            elements.messageArea.textContent = message;
+            elements.messageArea.className = `message-area message-${type}`;
+            elements.messageArea.style.display = 'block';
+            
+            setTimeout(() => {
+                elements.messageArea.style.display = 'none';
+            }, 5000);
+        }
+
+        function updateProgress(progress, message = '') {
+            elements.progressBarFill.style.width = `${progress}%`;
+            elements.progressPercentageText.textContent = `${progress}%`;
+            
+            if (message) {
+                elements.progressModalMessage.textContent = message;
+            }
+        }
+
+        function showProgressModal(title, message = '') {
+            elements.progressModalTitle.textContent = title;
+            elements.progressModalMessage.textContent = message;
+            elements.progressModal.style.display = 'flex';
+            updateProgress(0);
+        }
+
+        function hideProgressModal() {
+            elements.progressModal.style.display = 'none';
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // ================= FUNÇÕES DE API =================
+        async function makeRequest(url, options = {}) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
+            
+            const defaultOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                signal: controller.signal
+            };
+
+            if (options.body) {
+                defaultOptions.body = JSON.stringify(options.body);
+            }
+
+            if (options.method) {
+                defaultOptions.method = options.method;
+            }
+
+            try {
+                const response = await fetch(url, defaultOptions);
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                clearTimeout(timeoutId);
+                throw error;
+            }
+        }
+
+        async function fazerLogin(ra, senha) {
+            const loginData = {
+                user: ra,
+                senha: senha
+            };
+            
+            const headers = {
+                'Accept': 'application/json',
+                'Ocp-Apim-Subscription-Key': OCP_APIM_KEY
+            };
+            
+            return await makeRequest(LOGIN_URL, {
+                method: 'POST',
+                headers: headers,
+                body: loginData
+            });
+        }
+
+        async function registrarToken(token) {
+            return await makeRequest(`${API_BASE_URL}/registration/edusp/token`, {
+                method: 'POST',
+                body: { token }
+            });
+        }
+
+        async function buscarSalas(authToken) {
+            return await makeRequest(`${API_BASE_URL}/room/user?list_all=true&with_cards=true`, {
+                headers: { 'x-api-key': authToken }
+            });
+        }
+
+        async function buscarTarefasPorTarget(authToken, target, filterType) {
+            const params = new URLSearchParams({
+                "limit": "100",
+                "offset": "0",
+                "is_exam": "false",
+                "with_answer": "true",
+                "is_essay": "false",
+                "with_apply_moment": "true",
+                "answer_statuses": "pending",
+                "answer_statuses": "draft",
+                "expired_only": filterType === "expired" ? "true" : "false",
+                "filter_expired": filterType === "expired" ? "false" : "true",
+                "publication_target": target
+            });
+
+            const url = `${API_BASE_URL}/tms/task/todo?${params.toString()}`;
+            
+            const data = await makeRequest(url, {
+                headers: { 'x-api-key': authToken }
+            });
+
+            return Array.isArray(data) ? data : (data.tasks || []);
+        }
+
+        async function processarTarefa(authToken, task, timeMin, timeMax) {
+            // Buscar detalhes da tarefa
+            const taskDetails = await makeRequest(`${API_BASE_URL}/tms/task/${task.id}`, {
+                headers: { 'x-api-key': authToken }
+            });
+
+            // Simular tempo de processamento
+            const processingTime = Math.floor(Math.random() * (timeMax - timeMin + 1) + timeMin) * 60 * 1000;
+            await delay(Math.min(processingTime, 5000)); // Máximo 5 segundos para demo
+
+            // Criar payload de resposta
+            const payload = {
+                "accessed_on": new Date().toISOString(),
+                "executed_on": new Date().toISOString(),
+                "answers": {}
+            };
+
+            // Processar questões
+            if (taskDetails.questions && Array.isArray(taskDetails.questions)) {
+                taskDetails.questions.forEach(question => {
+                    const qid = question.id;
+                    let resposta = {};
+
+                    switch (question.type) {
+                        case "multiple_choice":
+                            if (question.options && question.options.length > 0) {
+                                const correctOption = question.options.find(opt => opt.correct);
+                                const optionToSelect = correctOption || question.options[0];
+                                if (optionToSelect && optionToSelect.id) {
+                                    resposta[optionToSelect.id] = true;
+                                }
+                            }
+                            break;
+                        case "text_ai":
+                        case "essay":
+                            resposta = { "0": "Resposta automática gerada pelo sistema" };
+                            break;
+                        default:
+                            resposta = {};
+                    }
+
+                    payload.answers[qid] = {
+                        "question_id": qid,
+                        "question_type": question.type,
+                        "answer": resposta
+                    };
+                });
+            }
+
+            // Submeter resposta
+            return await makeRequest(`${API_BASE_URL}/tms/task/${task.id}/answer`, {
+                method: 'POST',
+                headers: { 'x-api-key': authToken },
+                body: payload
+            });
+        }
+
+        // ================= FUNÇÕES PRINCIPAIS =================
+        async function verificarCredenciais() {
+            if (isVerified || isProcessing) return;
+            
+            const ra = elements.ra.value.trim();
+            const senha = elements.senha.value.trim();
+            
+            if (!ra || !senha) {
+                showMessage("Preencha RA e senha antes de verificar", "error");
+                return;
+            }
+            
+            isProcessing = true;
+            elements.verifyBtn.style.display = 'none';
+            elements.spinner.style.display = 'inline-block';
+            elements.statusText.textContent = 'Verificando...';
+            elements.btnPending.disabled = true;
+            elements.btnExpired.disabled = true;
+            
+            try {
+                // Fazer login
+                const loginData = await fazerLogin(ra, senha);
+                
+                if (!loginData || !loginData.token) {
+                    throw new Error('Resposta de login inválida');
+                }
+                
+                // Registrar token
+                const registrationData = await registrarToken(loginData.token);
+                
+                if (!registrationData || !registrationData.auth_token) {
+                    throw new Error('Falha no registro do token');
+                }
+                
+                currentAuthToken = registrationData.auth_token;
+                isVerified = true;
+                
+                elements.statusText.textContent = '✅ Verificado';
+                elements.btnPending.disabled = false;
+                elements.btnExpired.disabled = false;
+                showMessage("Credenciais verificadas com sucesso!", "success");
+                
+            } catch (error) {
+                elements.statusText.textContent = '❌ Erro';
+                showMessage(`Falha na verificação: ${error.message}`, "error");
+                console.error('Erro na verificação:', error);
+            } finally {
+                elements.spinner.style.display = 'none';
+                elements.verifyBtn.style.display = 'block';
+                isProcessing = false;
+            }
+        }
+
+        async function buscarTarefas(filterType) {
+            if (!isVerified) {
+                showMessage("Verifique suas credenciais primeiro", "error");
+                return;
+            }
+            
+            isProcessing = true;
+            elements.btnPending.disabled = true;
+            elements.btnExpired.disabled = true;
+            showProgressModal('Buscando Tarefas', 'Carregando salas e tarefas...');
+            
+            try {
+                // Buscar salas
+                const roomsData = await buscarSalas(currentAuthToken);
+                
+                if (!roomsData.rooms || !Array.isArray(roomsData.rooms)) {
+                    throw new Error('Estrutura de salas inválida');
+                }
+                
+                // Extrair targets
+                const targets = new Set();
+                roomsData.rooms.forEach(room => {
+                    if (room.id) targets.add(room.id.toString());
+                    if (room.name) targets.add(room.name);
+                });
+                
+                updateProgress(30, 'Buscando tarefas...');
+                
+                // Buscar tarefas de todos os targets
+                const allTasks = [];
+                const targetArray = Array.from(targets);
+                
+                for (let i = 0; i < targetArray.length; i++) {
+                    const target = targetArray[i];
+                    const progress = 30 + Math.floor((i / targetArray.length) * 60);
+                    updateProgress(progress, `Buscando em: ${target}`);
+                    
+                    try {
+                        const tasks = await buscarTarefasPorTarget(currentAuthToken, target, filterType);
+                        if (tasks && tasks.length > 0) {
+                            tasks.forEach(task => {
+                                task.publication_target = target;
+                                task.room_name = roomNameFromTarget(target);
+                            });
+                            allTasks.push(...tasks);
+                        }
+                    } catch (error) {
+                        console.warn(`Erro no target ${target}:`, error);
+                    }
+                    
+                    await delay(500); // Delay entre requests
+                }
+                
+                // Remover duplicatas
+                currentFetchedTasks = allTasks.filter((task, index, self) =>
+                    index === self.findIndex(t => t.id === task.id)
+                );
+                
+                hideProgressModal();
+                
+                if (currentFetchedTasks.length > 0) {
+                    exibirTarefasNoModal(currentFetchedTasks, filterType);
+                    showMessage(`${currentFetchedTasks.length} tarefas encontradas!`, "success");
+                } else {
+                    showMessage("Nenhuma tarefa encontrada", "info");
+                }
+                
+            } catch (error) {
+                hideProgressModal();
+                showMessage(`Erro ao buscar tarefas: ${error.message}`, "error");
+                console.error('Erro na busca:', error);
+            } finally {
+                elements.btnPending.disabled = false;
+                elements.btnExpired.disabled = false;
+                isProcessing = false;
+            }
+        }
+
+        function roomNameFromTarget(target) {
+            // Tentar extrair nome da sala do target
+            if (target.includes(':')) {
+                return target.split(':')[0];
+            }
+            return target;
+        }
+
+        function exibirTarefasNoModal(tasks, filterType) {
+            elements.taskListContainer.innerHTML = '';
+            elements.selectAllCheckbox.checked = false;
+            
+            if (tasks.length === 0) {
+                elements.taskListContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Nenhuma tarefa encontrada</p>';
+            } else {
+                tasks.forEach(task => {
+                    const taskItem = document.createElement('div');
+                    taskItem.className = 'task-item';
+                    
+                    taskItem.innerHTML = `
+                        <input type="checkbox" id="task-${task.id}" value="${task.id}" checked>
+                        <label for="task-${task.id}">
+                            ${task.title || 'Sem título'}
+                            <br><small style="color: var(--text-muted);">
+                                Sala: ${task.room_name || 'N/A'} | Status: ${task.answer_status || 'pendente'}
+                            </small>
+                        </label>
+                    `;
+                    
+                    elements.taskListContainer.appendChild(taskItem);
+                });
+            }
+            
+            elements.taskSelectionModalTitle.textContent = 
+                `Tarefas ${filterType === "pending" ? "Pendentes" : "Expiradas"} (${tasks.length})`;
+            
+            elements.taskSelectionModal.style.display = 'flex';
+        }
+
+        function obterTarefasSelecionadas() {
+            const checkboxes = elements.taskListContainer.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedIds = Array.from(checkboxes).map(cb => cb.value);
+            return currentFetchedTasks.filter(task => selectedIds.includes(String(task.id)));
+        }
+
+        async function processarTarefasSelecionadas() {
+            const selectedTasks = obterTarefasSelecionadas();
+            
+            if (selectedTasks.length === 0) {
+                showMessage("Selecione pelo menos uma tarefa", "error");
+                return;
+            }
+            
+            const minTime = parseInt(elements.modalMinTime.value) || 1;
+            const maxTime = parseInt(elements.modalMaxTime.value) || 3;
+            
+            showProgressModal('Processando Tarefas', `Processando ${selectedTasks.length} tarefa(s)...`);
+            
+            try {
+                const results = [];
+                
+                for (let i = 0; i < selectedTasks.length; i++) {
+                    const task = selectedTasks[i];
+                    const progress = Math.floor((i / selectedTasks.length) * 100);
+                    
+                    updateProgress(progress, `Processando: ${task.title || 'Tarefa sem título'}`);
+                    
+                    try {
+                        const result = await processarTarefa(currentAuthToken, task, minTime, maxTime);
+                        results.push({ success: true, task: task.title, result });
+                    } catch (error) {
+                        results.push({ success: false, task: task.title, error: error.message });
+                    }
+                    
+                    await delay(1000); // Delay entre tarefas
+                }
+                
+                updateProgress(100, 'Processamento concluído!');
+                
+                // Mostrar resultados
+                const successful = results.filter(r => r.success).length;
+                setTimeout(() => {
+                    hideProgressModal();
+                    elements.taskSelectionModal.style.display = 'none';
+                    showMessage(
+                        `Processamento concluído: ${successful}/${selectedTasks.length} tarefas processadas com sucesso`,
+                        successful === selectedTasks.length ? "success" : "warning"
+                    );
+                }, 1000);
+                
+            } catch (error) {
+                hideProgressModal();
+                showMessage(`Erro no processamento: ${error.message}`, "error");
+            }
+        }
+
+        // ================= EVENT LISTENERS =================
+        elements.togglePassword.addEventListener('click', () => {
+            const type = elements.senha.getAttribute('type') === 'password' ? 'text' : 'password';
+            elements.senha.setAttribute('type', type);
+            elements.togglePassword.innerHTML = type === 'password' ? 
+                '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        elements.verifyBtn.addEventListener('click', verificarCredenciais);
+        elements.btnPending.addEventListener('click', () => buscarTarefas("pending"));
+        elements.btnExpired.addEventListener('click', () => buscarTarefas("expired"));
+
+        elements.selectAllCheckbox.addEventListener('change', function() {
+            const checkboxes = elements.taskListContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = this.checked;
+            });
+        });
+
+        elements.closeModalBtn.addEventListener('click', () => {
+            elements.taskSelectionModal.style.display = 'none';
+        });
+
+        elements.startSelectedBtn.addEventListener('click', processarTarefasSelecionadas);
+        elements.startAllBtn.addEventListener('click', () => {
+            // Selecionar todas as tarefas
+            const checkboxes = elements.taskListContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = true;
+            });
+            processarTarefasSelecionadas();
+        });
+
+        // Sincronizar tempos
+        const minTimeInput = document.getElementById('minTime');
+        const maxTimeInput = document.getElementById('maxTime');
+        
+        minTimeInput.addEventListener('change', () => {
+            elements.modalMinTime.value = minTimeInput.value;
+        });
+        
+        maxTimeInput.addEventListener('change', () => {
+            elements.modalMaxTime.value = maxTimeInput.value;
+        });
+
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (event) => {
+            if (event.target === elements.taskSelectionModal) {
+                elements.taskSelectionModal.style.display = 'none';
+            }
+        });
+
+        // Foco no campo RA
+        window.addEventListener('load', () => {
+            elements.ra.focus();
+        });
+
+        console.log('Sistema TrollChipsS Tarefas SP carregado');
+    </script>
+</body>
+</html>
